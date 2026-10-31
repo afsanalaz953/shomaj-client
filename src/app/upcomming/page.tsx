@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, Clock, Eye, MapPin, Users } from "lucide-react";
+import { CalendarDays, Clock, Eye, MapPin } from "lucide-react";
 import Link from "next/link";
 import type { Event } from "@/types/event";
 
@@ -33,7 +33,21 @@ const EventCard = ({ event }: { event: Event }) => {
 
   return (
     <Card className="overflow-hidden">
-      {event.imageUrl ? (
+        <div className="relative">
+             {event.imageUrl ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={event.imageUrl}
+          alt={event.title}
+          className="h-48 w-full object-cover rounded "
+          loading="lazy"
+        />
+      ) : null}
+             {event.category ? (
+          <Badge variant="outline" className="absolute top-4 right-4 p-4  bg-[#b9d82f]">{event.category}</Badge>
+        ) : null}
+        </div>
+      {/* {event.imageUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={event.imageUrl}
@@ -41,29 +55,29 @@ const EventCard = ({ event }: { event: Event }) => {
           className="h-48 w-full object-cover"
           loading="lazy"
         />
-      ) : null}
+      ) : null} */}
 
       <CardHeader>
         <div className="flex items-start justify-between gap-2">
-          <CardTitle className="text-lg">{event.title}</CardTitle>
-          <Badge variant={isFull ? "destructive" : "secondary"}>
+          <CardTitle className="text-2xl">{event.title}</CardTitle>
+          {/* <Badge variant={isFull ? "destructive" : "secondary"}>
             {event.status ?? (isFull ? "full" : "upcoming")}
-          </Badge>
+          </Badge> */}
         </div>
-        <CardDescription className="line-clamp-3">
+        {/* <CardDescription className="line-clamp-3">
           {event.description}
-        </CardDescription>
+        </CardDescription> */}
       </CardHeader>
 
       <CardContent className="flex flex-col gap-3">
-        {event.category ? (
+        {/* {event.category ? (
           <Badge variant="outline">{event.category}</Badge>
-        ) : null}
+        ) : null} */}
 
-        <div className="flex flex-col gap-2 text-sm text-muted-foreground">
+        <div className="flex flex-col gap-2 text-sm text-muted-foreground ">
           <div className="flex items-center gap-2">
-            <CalendarDays className="size-4 shrink-0" />
-            <span>{formatDate(event.date)}</span>
+            <CalendarDays className="text-lg text-orange-700 shrink-0" />
+            <span className="text-orange-700 font-bold">{formatDate(event.date)}</span>
           </div>
 
           {event.startTime || event.endTime ? (
@@ -84,13 +98,13 @@ const EventCard = ({ event }: { event: Event }) => {
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <Users className="size-4 shrink-0" />
             <span>
               {registered}/{capacity || "?"} joined
               {capacity > 0 && !isFull ? ` · ${seatsLeft} seats left` : ""}
             </span>
-          </div>
+          </div> */}
         </div>
 
         {event.organizer?.name ? (
@@ -101,18 +115,18 @@ const EventCard = ({ event }: { event: Event }) => {
         ) : null}
       </CardContent>
 
-      <CardFooter className="grid grid-cols-2 gap-2">
+      <CardFooter className="">
         <Button
           variant="outline"
-          className="w-full"
+          className="w-full bg-[#EB7036] rounded"
           render={<Link href={`/event/${event._id}`} />}
         >
           <Eye className="size-4" />
           View Event
         </Button>
-        <Button className="w-full bg-[#087C7E] text-white hover:bg-[#066567]" disabled={isFull}>
+        {/* <Button className="w-full bg-[#087C7E] text-white hover:bg-[#066567]" disabled={isFull}>
           {isFull ? "Registration Full" : "Join Event"}
-        </Button>
+        </Button> */}
       </CardFooter>
     </Card>
   );

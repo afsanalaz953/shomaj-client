@@ -20,9 +20,9 @@ const Navbar = () => {
 
   const links = [
     { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/profile", label: "My Profile" },
-    { href: "/products", label: "Products" },
+    { href: "/upcomming", label: "Upcomming" },
+    // { href: "/profile", label: "My Profile" },
+    // { href: "/products", label: "Products" },
   ];
 
   // Helper to close the menu
