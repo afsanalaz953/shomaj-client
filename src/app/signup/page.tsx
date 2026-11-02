@@ -1,117 +1,205 @@
+"use client";
 
+import React from "react";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { Button } from "@heroui/react";
+import { authClient } from "@/lib/auth-client";
 
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldSeparator,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-
-export default function SignUpPage({
- 
- 
-}: React.ComponentProps<"div">) {
-  return (
-    <div className='flex flex-col gap-6 container mx-auto my-10' >
-        <div className="max-w-2xl container mx-auto py-10 ">
- <Card className="">
-        <CardHeader className="text-center">
-          <CardTitle className="text-3xl">Welcome </CardTitle>
-          <CardDescription>
-            Create your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form>
-            <FieldGroup>
-              {/* <Field>
-                <Button variant="outline" type="button">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path
-                      d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  Login with Apple
-                </Button>
-                <Button variant="outline" type="button">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path
-                      d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  Login with Google
-                </Button>
-              </Field> */}
-              {/* <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                Or continue with
-              </FieldSeparator> */}
-                <Field>
-                <FieldLabel htmlFor="name" className="font-bold text-xl" >Name</FieldLabel>
-                <Input
-                  id="name"
-                  type="name"
-                  placeholder="Mr. Rahim"
-                  required
-                  className="text-slate-100"
-                />
-              </Field>
-                <Field>
-                <FieldLabel htmlFor="image"className="font-bold text-xl"  >Image Url</FieldLabel>
-                <Input
-                  id="image"
-                  type="url"
-                  placeholder="Image url"
-                  required
-                />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="email"className="font-bold text-xl"  >Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </Field>
-              <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password"className="font-bold text-xl" >Password</FieldLabel>
-                  {/* <a
-                    href="#"
-                    className="ml-auto text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a> */}
-                </div>
-                <Input id="password" type="password" required />
-              </Field>
-              <Field>
-                <Button type="submit">Sign Up</Button>
-                <FieldDescription className="text-center">
-                   Have an account? <a href="#">Sign in</a>
-                </FieldDescription>
-              </Field>
-            </FieldGroup>
-          </form>
-        </CardContent>
-      </Card>
-        </div>
-     
-      <FieldDescription className="px-6 text-center">
-        
-      </FieldDescription>
-    </div>
-  )
+/* ---------- Types ---------- */
+interface SignUpFormData {
+  name: string;
+  email: string;
+  password: string;
+  image: string;
+  
 }
+
+/* ---------- Shared input styling (fixes invisible placeholder) ---------- */
+const inputClasses =
+  "input w-full bg-slate-50 text-slate-900 caret-blue-600 " +
+  "placeholder:text-slate-400 placeholder:opacity-100 " +
+  "border-2 border-slate-200 rounded-lg " +
+  "focus:border-blue-500 focus:bg-white focus:outline-none transition-colors";
+
+const legendClasses = "fieldset-legend text-sm font-semibold text-slate-700";
+
+const SignUpPage = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SignUpFormData>();
+
+  const router = useRouter();
+
+  const handleGoogleSignin = async (): Promise<void> => {
+    const data = await authClient.signIn.social({
+      provider: "google",
+    });
+    console.log(data, "data");
+  };
+
+  const handleRegisterFunc = async (data: SignUpFormData): Promise<void> => {
+    console.log(data, "data");
+
+    const { name, email, password, image } = data;
+
+    const { data: res, error } = await authClient.signUp.email({
+      name, // required
+      email, // required
+      image,
+      password, // required
+      autoSignIn: false,
+      callbackURL: "/login",
+    });
+
+    console.log("data:res", res, "Error", error);
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    if (res) {
+      // await authClient.signOut();
+      alert("Signup Successful");
+      router.push("/signin");
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-linear-to-br from-slate-100 via-blue-50 to-indigo-100 py-10 px-4 flex items-center justify-center">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-200 p-8 flex flex-col gap-5">
+        <h2 className="font-bold text-2xl text-center text-slate-800">
+          Sign Up
+        </h2>
+
+        <form
+          onSubmit={handleSubmit(handleRegisterFunc)}
+          className="w-full flex flex-col gap-1"
+        >
+          {/* Name */}
+          <fieldset className="fieldset">
+            <legend className={legendClasses}>Name</legend>
+            <input
+              type="text"
+              className={inputClasses}
+              placeholder="Enter Your Name"
+              {...register("name", { required: "Name is required" })}
+            />
+            {errors.name && (
+              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+            )}
+          </fieldset>
+
+          {/* Email */}
+          <fieldset className="fieldset">
+            <legend className={legendClasses}>Email</legend>
+            <input
+              type="email"
+              className={inputClasses}
+              placeholder="Enter Your Email"
+              {...register("email", { required: "Email is required" })}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
+            )}
+          </fieldset>
+
+          {/* Photo URL */}
+          <fieldset className="fieldset">
+            <legend className={legendClasses}>Photo URL</legend>
+            <input
+              type="text"
+              className={inputClasses}
+              placeholder="Photo url"
+              {...register("image", { required: "Photo url is required" })}
+            />
+            {errors.image && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.image.message}
+              </p>
+            )}
+          </fieldset>
+
+          {/* Password */}
+          <fieldset className="fieldset">
+            <legend className={legendClasses}>Password</legend>
+            <input
+              type="password"
+              className={inputClasses}
+              placeholder="Enter your Password"
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters",
+                },
+                validate: {
+                  hasUpperCase: (value) =>
+                    /[A-Z]/.test(value) ||
+                    "Password must contain at least one uppercase letter",
+                  hasLowerCase: (value) =>
+                    /[a-z]/.test(value) ||
+                    "Password must contain at least one lowercase letter",
+                },
+              })}
+            />
+            {errors.password && (
+              <p className="text-red-500 text-sm font-bold mt-1">
+                {errors.password.message}
+              </p>
+            )}
+            <p className="text-xs text-slate-500 mt-1">
+              Must contain uppercase, lowercase, and at least 6 characters
+            </p>
+          </fieldset>
+
+          <Button
+            type="submit"
+            isDisabled={isSubmitting}
+            className="w-full mt-3 font-bold bg-[#EB7036]  hover:bg-[#D9EF78] text-black transition-colors"
+          >
+            {isSubmitting ? "Registering..." : "Sign Up"}
+          </Button>
+
+          <div className="flex items-center gap-3 my-3">
+            <span className="flex-1 h-px bg-slate-200" />
+            <span className="text-xs text-slate-400">OR</span>
+            <span className="flex-1 h-px bg-slate-200" />
+          </div>
+
+          {/* Google */}
+          <button
+            type="button"
+            onClick={handleGoogleSignin}
+            className="w-full rounded-lg border-2 border-slate-200 bg-slate-50 py-2.5 font-bold text-orange-700 hover:bg-blue-50 hover:border-blue-300 transition-colors"
+          >
+            Continue with Google
+          </button>
+
+          <p className="text-sm text-center text-slate-600 mt-4">
+            Already have an account?{" "}
+            <Link
+              href="/signin"
+              className="font-bold text-orange-700 hover:text-blue-800 hover:underline"
+            >
+              Sign in
+            </Link>
+          </p>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default SignUpPage;
+
+
+
+
+

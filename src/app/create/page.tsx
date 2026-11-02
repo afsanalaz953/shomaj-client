@@ -169,13 +169,23 @@ const CreateEventPage = () => {
       };
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/events`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/create`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         }
       );
+//       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/tutors`, {
+//            method: 'POST',
+//         headers: {
+//             'content-type': 'application/json'
+//            },
+//            body: JSON.stringify(allTutor)
+//         })
+
+const data = await res.json();
+ console.log( 'data after post', data);
 
       if (!res.ok) {
         throw new Error(`Request failed with status ${res.status}`);

@@ -29,7 +29,7 @@ const Navbar = () => {
   const closeMenu = () => setOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-base-300 bg-base-100/80 backdrop-blur-md shadow-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-base-300 bg-[#D9EF78] backdrop-blur-md shadow-sm">
       <div className="navbar grid grid-cols-3 gap-15 container mx-auto px-4">
         {/* ================= LEFT ================= */}
         <div className="navbar-start gap-2">
@@ -114,15 +114,16 @@ const Navbar = () => {
           {/* ---- Logo ---- */}
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/assets/furniture-logo.jpg"
+              src="/assets/offset-colour-leaves_78370-6228.avif"
               alt="Serein Furniture Hub logo"
               width={50}
               height={50}
-              className="rounded-full object-cover"
+              className="rounded-full object-cover bg-[#D9EF78]"
             />
             <div>
-              <p className="font-bold text-2xl leading-none">serein.</p>
-              <p className="text-[#087C7E] text-sm">Furniture Hub</p>
+              <p className="text-3xl font-bold tracking-widest  hover:text-white">shomaj.</p>
+              {/* <p className="font-bold text-2xl leading-none">serein.</p> */}
+              <p className="text-[#087C7E] text-sm">Social Events Hub</p>
             </div>
           </Link>
         </div>

@@ -1,65 +1,89 @@
 "use client";
 
+import {
+  CreditCardIcon,
+  LogOutIcon,
+  SettingsIcon,
+  UserIcon,
+} from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
 
-import React from 'react';
-import Link from "next/link"
-import { usePathname, useRouter } from 'next/navigation';
-import Image from "next/image"
-import { authClient } from "@/lib/auth-client"
-
+const DEFAULT_AVATAR = "/default-avatar.png"; // public folder এ একটা রাখুন
 
 const DropDownHover = () => {
-    const { data: session} = authClient.useSession();
-    console.log (session, "session")
-    
-    const user = session?.user;
-    console.log (user, "user");
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  const router = useRouter();
 
-     const router = useRouter();
-     const pathname = usePathname();
-        console.log (pathname, "pathname");
-    
-        const isActive = (href:string) =>{
-           return href === pathname;
-        };
-    return (
-        <div className="dropdown dropdown-hover">
-  <div tabIndex={0} role="button" className="m-1">
-     {/* <Image src={user?.image || userAvatar  } */}
-     <div className="avatar flex gap-3">
-    
-     <div className="w-10 rounded-full">
-    <Image
-    alt="Tailwind-CSS-Avatar-component" 
-    src= {user?.image as string}
-     width={10}
-      height={10} 
-    />
-  
-  </div>   
-           
-  </div> 
+  const handleLogout = async () => {
+    await authClient.signOut();
+    router.push("/signin");
+  };
 
-    </div>
-  <ul tabIndex={-1} className="dropdown-content menu bg-base-100 rounded-box z-2 w-25 shadow-sm">
-    <li className='text-cyan-800 font-bold'> {user?.name}  </li>
-    <li className='text-cyan-800 font-bold'><Link href={"/create"} className={`${isActive ("/create") ? " border-b-4 border-b-cyan-600" : ""}`} >Create Event</Link></li>
-    <li className='text-cyan-800 font-bold'><Link href={"/manage"} className={`${isActive ("/manage") ? " border-b-4 border-b-cyan-600" : ""}`} >Manage Event</Link></li>
-    {/* <li className='text-cyan-800 font-bold'><Link href={"/profile"} className={`${isActive ("/profile") ? " border-b-4 border-b-cyan-600" : ""}`} >Profile</Link></li> */}
-    
-    <li> 
-                    <button className='btn bg-[#087C7E] hover:text-white text-sm' 
-                    onClick={async () => {
-                      await authClient.signOut();
-                      router.push("/");
-                    }} >
-                       Sign Out</button>
-                       </li>
-  </ul>
-</div>
-    );
+  return (
+    <DropdownMenu>
+      {/* 👇 Trigger এ Avatar বসানো হলো */}
+      <DropdownMenuTrigger
+        render={
+          <button
+            type="button"
+            className="rounded-full overflow-hidden w-10 h-10 border-2 border-transparent hover:border-ring transition focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          >
+            <Image
+              src={user?.image || DEFAULT_AVATAR}
+              alt={user?.name || "User"}
+              width={40}
+              height={40}
+              className="w-10 h-10 rounded-full object-cover"
+            />
+          </button>
+        }
+      />
+
+      <DropdownMenuContent align="end" className="w-48">
+        <DropdownMenuItem>
+          <Link href='/create' className="flex gap-2 items-center">
+           <UserIcon />
+           <span>Create</span> 
+           </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+        <Link href='/create' className="flex gap-2 items-center ">
+          <CreditCardIcon />
+          <span>Manage </span> 
+        </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+      <Link href='/create' className="flex gap-2 items-center ">
+          <SettingsIcon /> 
+          <span> Joined</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem variant="destructive" onClick={handleLogout}>
+          <LogOutIcon /> Log out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 };
 
 export default DropDownHover;
+
+
+
+
+
