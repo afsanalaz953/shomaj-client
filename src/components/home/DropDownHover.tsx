@@ -61,13 +61,13 @@ const DropDownHover = () => {
            </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-        <Link href='/create' className="flex gap-2 items-center ">
+        <Link href='/manage' className="flex gap-2 items-center ">
           <CreditCardIcon />
           <span>Manage </span> 
         </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-      <Link href='/create' className="flex gap-2 items-center ">
+      <Link href='/joined' className="flex gap-2 items-center ">
           <SettingsIcon /> 
           <span> Joined</span>
           </Link>

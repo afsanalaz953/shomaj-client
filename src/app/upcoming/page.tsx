@@ -119,7 +119,8 @@ const EventCard = ({ event }: { event: Event }) => {
         <Button
           variant="outline"
           className="w-full bg-[#EB7036] rounded"
-          render={<Link href={`/event/${event._id}`} />}
+          render={<Link href={`/upcoming/${event._id}`} />}
+          // render={<Link href={`/event/${event._id}`} />}
         >
           <Eye className="size-4" />
           View Event
@@ -132,11 +133,11 @@ const EventCard = ({ event }: { event: Event }) => {
   );
 };
 
-const UpCommingPage = async () => {
+const UpComingPage = async () => {
   let allEvents: Event[] = [];
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/upcomming`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/upcoming`, {
       cache: "no-store",
       //   headers:{
       //     authorization: `Bearer ${tokenObjData.token}`
@@ -170,4 +171,4 @@ const UpCommingPage = async () => {
   );
 };
 
-export default UpCommingPage;
+export default UpComingPage;

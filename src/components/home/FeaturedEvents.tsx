@@ -116,7 +116,7 @@ const FeaturedEvents = ({ events }: FeaturedEventsProps) => {
             {/* ---- View button ---- */}
             <CardFooter className="border-t bg-transparent p-4">
               <Button
-                render={<Link href={`/events/${event._id}`} />}
+                render={<Link href={`/upcoming/${event._id}`} />}
                 className="h-11 w-full gap-2 rounded-xl bg-[#EB7036] text-sm font-semibold text-white hover:bg-[#d95f27]"
               >
                 <Eye className="size-4" />

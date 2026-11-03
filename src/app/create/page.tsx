@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import {
   CalendarDays,
   CalendarIcon,
@@ -45,6 +46,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Toaster, toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
+import { authClient } from "@/lib/auth-client";
 
 const EVENT_TYPES = [
   "Conference",
@@ -140,6 +142,10 @@ const CreateEventPage = () => {
   const previewUrl = form.imageUrl.trim();
   const isValidImageUrl = /^https?:\/\/\S+$/i.test(previewUrl);
 
+    const { data: session} = authClient.useSession();
+    const user = session?.user;
+console.log (user, "user");
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -166,6 +172,10 @@ const CreateEventPage = () => {
         imageUrl: form.imageUrl.trim(),
         description: form.description.trim(),
         status: "upcoming",
+        userName: user?.name,
+        userId : user?.id,
+        userEmail: user?.email,
+        userImage: user?.image,
       };
 
       const res = await fetch(
@@ -224,7 +234,7 @@ const data = await res.json();
         <h1 className="text-3xl font-bold">Create Event</h1>
         <p className="text-muted-foreground">
           Fill in the details below. Your event will show up on the{" "}
-          <Link href="/upcomming" className="font-medium  text-blue-600 underline underline-offset-4">
+          <Link href="/upcoming" className="font-medium  text-blue-600 underline underline-offset-4">
             Upcoming Events
           </Link>{" "}
           page.
