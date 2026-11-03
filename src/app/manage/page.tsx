@@ -3,7 +3,7 @@ import { headers } from 'next/headers';
 import React from 'react';
 import { Table } from '@heroui/react';
 import {Button} from "@heroui/react"
-// import   DeleteAddingButton from "@/components/shared/DeleteButton";
+import   DeleteAddingButton from "@/components/manage/DeleteButton";
 import Image from "next/image";
 import { auth } from '@/lib/auth';
 // import EditModal from "@/components/EditModal"
@@ -81,7 +81,7 @@ console.log(myEventList, "eventlist")
               {/* <Table.Column  className="text-lg font-bold">Description</Table.Column> */}
               <Table.Column>Status</Table.Column>
               {/* <Table.Column className="text-lg font-bold" >Session-Start-Date</Table.Column> */}
-              {/* <Table.Column className="text-lg font-bold text-center"> Action</Table.Column> */}
+              <Table.Column className="text-lg font-bold text-center"> Action</Table.Column>
             </Table.Header>
             <Table.Body>
               {myEventList && myEventList.map((eventList: EventList) => (
@@ -105,10 +105,10 @@ console.log(myEventList, "eventlist")
                   <Table.Cell>{eventList.description}</Table.Cell>
                   <Table.Cell>{eventList.category}</Table.Cell>
                   <Table.Cell> {eventList.status}</Table.Cell>
-                  <Table.Cell className="flex gap-3 bg-white p-8"> */}
+                  <Table.Cell className="flex gap-3 bg-white p-8">
                     <Button>  {'Edit'} </Button> 
-                    <EditModal formTutors = {eventList} />
-                    {/* {/* < DeleteAddingButton  formTutorId = {formTutors._id} /> */}
+                    {/* <EditModal eventLists = {eventList} /> */}
+                     < DeleteAddingButton  userId= {eventList._id} />
                    </Table.Cell> 
                 </Table.Row>
               ))}
