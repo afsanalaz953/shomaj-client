@@ -28,6 +28,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { Event } from "@/types/event";
+import { authClient } from "@/lib/auth-client";
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -75,6 +76,11 @@ interface EventDetailsCardProps {
 }
 
 const EventDetailsCard = ({ event }: EventDetailsCardProps) => {
+
+  const { data: session } = authClient.useSession();
+    const user = session?.user;
+    console.log(user, 'user for joined')
+
   const router = useRouter();
   const reduceMotion = useReducedMotion();
   const [joined, setJoined] = useState(false);
@@ -125,6 +131,16 @@ const EventDetailsCard = ({ event }: EventDetailsCardProps) => {
       value: capacity > 0 ? `${registered}/${capacity} joined` : `${registered} joined`,
     },
   ];
+const data ={
+   userName: user?.name,
+        userId : user?.id,
+        userEmail: user?.email,
+        userImage: user?.image,
+        ...event
+
+}
+console.log(data, 'joined data')
+
 
   return (
     <motion.article
