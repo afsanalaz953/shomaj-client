@@ -20,7 +20,7 @@ const Navbar = () => {
 
   const links = [
     { href: "/", label: "Home" },
-    { href: "/upcomming", label: "Upcomming" },
+    { href: "/upcoming", label: "Upcoming" },
     // { href: "/profile", label: "My Profile" },
     // { href: "/products", label: "Products" },
   ];

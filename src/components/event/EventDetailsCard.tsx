@@ -148,11 +148,11 @@ const EventDetailsCard = ({ event }: EventDetailsCardProps) => {
             className="h-full w-full object-cover"
           />
           {event.category ? (
-            <Badge className="absolute top-4 right-4 bg-[#D9F265] px-3 py-4 text-xs font-semibold text-[#1F3D2B]">
+            <Badge className="absolute top-4 right-4 bg-[#D9F265] px-3 py-4  font-semibold text-[#1F3D2B]">
               {event.category}
             </Badge>
           ) : null}
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-6 pt-14">
+          <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/70 to-transparent p-6 pt-14">
             <motion.h1
               variants={item}
               className="text-2xl leading-tight font-bold text-white sm:text-3xl"
@@ -168,14 +168,14 @@ const EventDetailsCard = ({ event }: EventDetailsCardProps) => {
             <div className="flex flex-wrap items-center gap-2">
               <Badge
                 variant={isFull ? "destructive" : "secondary"}
-                className="px-3 py-1.5 text-xs font-semibold"
+                className="p-3  font-semibold  bg-[#D9F265]"
               >
                 {isFull
                   ? "Full"
                   : (event.status ?? "upcoming").toUpperCase()}
               </Badge>
               {event.organizer?.name ? (
-                <span className="text-xs text-muted-foreground">
+                <span className=" text-muted-foreground">
                   Organized by {event.organizer.name}
                   {event.organizer.verified ? " · Verified" : ""}
                 </span>
@@ -187,7 +187,7 @@ const EventDetailsCard = ({ event }: EventDetailsCardProps) => {
             </CardTitle>
 
             {event.description ? (
-              <CardDescription className="text-sm leading-relaxed">
+              <CardDescription className=" leading-relaxed">
                 {event.description}
               </CardDescription>
             ) : null}
@@ -202,10 +202,10 @@ const EventDetailsCard = ({ event }: EventDetailsCardProps) => {
               >
                 {detail.icon}
                 <div className="flex min-w-0 flex-col">
-                  <span className="text-xs font-medium text-muted-foreground">
+                  <span className=" font-medium text-muted-foreground">
                     {detail.label}
                   </span>
-                  <span className="text-sm font-semibold break-words">
+                  <span className=" font-semibold break-words">
                     {detail.value}
                   </span>
                 </div>
@@ -229,7 +229,7 @@ const EventDetailsCard = ({ event }: EventDetailsCardProps) => {
         <motion.div variants={item}>
           <CardFooter className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-col">
-              <span className="text-sm font-medium text-foreground">
+              <span className=" font-medium text-foreground">
                 {capacity > 0
                   ? `${seatsLeft} seat${seatsLeft === 1 ? "" : "s"} left`
                   : "Everyone is welcome"}
@@ -240,7 +240,7 @@ const EventDetailsCard = ({ event }: EventDetailsCardProps) => {
                     initial={{ opacity: 0, y: -4 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="text-xs text-[#087C7E]"
+                    className=" text-[#087C7E]"
                   >
                     Taking you to your joined events…
                   </motion.span>
@@ -250,7 +250,7 @@ const EventDetailsCard = ({ event }: EventDetailsCardProps) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-xs text-muted-foreground"
+                    className="text-muted-foreground"
                   >
                     Join to save this event to your list
                   </motion.span>
