@@ -32,3 +32,13 @@ export interface Event {
   tags?: string[];
   imageUrl?: string;
 }
+
+/** Document returned by `GET /joined/:userId` — an event plus who joined it. */
+export interface JoinedEvent extends Event {
+  userId?: string;
+  userName?: string;
+  userEmail?: string;
+  userImage?: string;
+  /** ISO timestamp recorded when the user pressed "Join Event". */
+  joinedAt?: string;
+}

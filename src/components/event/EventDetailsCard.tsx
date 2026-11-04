@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/card";
 import type { Event } from "@/types/event";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -75,7 +76,7 @@ interface EventDetailsCardProps {
   event: Event;
 }
 
-const EventDetailsCard = ({ event }: EventDetailsCardProps) => {
+const EventDetailsCard =({ event }: EventDetailsCardProps) => {
 
   const { data: session } = authClient.useSession();
     const user = session?.user;
@@ -100,13 +101,7 @@ const EventDetailsCard = ({ event }: EventDetailsCardProps) => {
     };
   }, []);
 
-  const handleJoin = () => {
-    if (joined || isFull) return;
-    setJoined(true);
-    redirectRef.current = setTimeout(() => router.push("/joined"), 700);
-  };
-
-  const details: { icon: ReactNode; label: string; value: string }[] = [
+   const details: { icon: ReactNode; label: string; value: string }[] = [
     {
       icon: <CalendarDays className="size-5 shrink-0 text-[#EB7036]" />,
       label: "Date",
@@ -131,17 +126,48 @@ const EventDetailsCard = ({ event }: EventDetailsCardProps) => {
       value: capacity > 0 ? `${registered}/${capacity} joined` : `${registered} joined`,
     },
   ];
+
+  const handleJoin = async() => {
+    if (joined || isFull) return;
+    setJoined(true);
+    redirectRef.current = setTimeout(() => router.push("/joined"), 700);
+ 
+
+ 
 const data ={
    userName: user?.name,
         userId : user?.id,
         userEmail: user?.email,
         userImage: user?.image,
+        joinedAt: new Date().toISOString(),
         ...event
+      
 
 }
 console.log(data, 'joined data')
+ const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/joined`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
 
 
+const joinedData = await res.json();
+ console.log( 'data after post', joinedData);
+
+      if (!res.ok) {
+        throw new Error(`Request failed with status ${res.status}`);
+      }
+
+      // toast.add({
+      //   type: "success",
+      //   title: "Event created",
+      //   description: `"${joinedData.title}" is now listed as an upcoming event.`,
+      // });
+
+ };
   return (
     <motion.article
       variants={container}
