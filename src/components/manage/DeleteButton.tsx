@@ -2,6 +2,7 @@
 
 import { AlertDialog, Button } from "@heroui/react";
 import { ToastContainer, toast } from "react-toastify";
+import { RiDeleteBin3Line } from "react-icons/ri";
 
 type DeleteAddingButtonProps = {
   userId: string;
@@ -12,7 +13,7 @@ const DeleteAddingButton = ({ userId }: DeleteAddingButtonProps) => {
 
   const handleDeleteButton = async () => {
     toast.success("adding event deleted ", {
-      duration: 4000,
+      autoClose: 4000,
       position: "top-center",
     });
 
@@ -37,7 +38,7 @@ const DeleteAddingButton = ({ userId }: DeleteAddingButtonProps) => {
         Cancel
       </Button> */}
       <Button variant="danger" type="submit">
-        Delete
+      <RiDeleteBin3Line />
       </Button>
 
       <AlertDialog.Backdrop>
