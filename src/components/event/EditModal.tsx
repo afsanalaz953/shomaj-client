@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from "react";
@@ -15,7 +16,7 @@ import {
 import { toast } from "react-toastify";
 import { FaRegEdit } from "react-icons/fa";
 
-// ✅ Helpers
+// ---------- Helpers ----------
 const getTodayString = () => {
   const d = new Date();
   const y = d.getFullYear();
@@ -34,12 +35,17 @@ const toDateInputValue = (dateStr?: string) => {
   return `${y}-${m}-${day}`;
 };
 
+// স্পেস এবং কেস ইগনোর করার জন্য
+const normalize = (s: string) =>
+  s.toLowerCase().replace(/\s+/g, "").replace(/,/g, "");
+
+// ---------- Types ----------
 interface MyEventList {
   _id: string;
   imageUrl?: string;
   image?: string;
   title: string;
-  location?: { venue: string };
+  location?: { venue: string } | string; // স্ট্রিং বা অবজেক্ট দুটোই হ্যান্ডেল করবে
   date?: string;
   description?: string;
   category?: string;
@@ -52,22 +58,7 @@ interface EditModalProps {
   eventList: MyEventList;
 }
 
-const CATEGORY_OPTIONS = [
-  { id: "Donation", label: "Donation" },
-  { id: "Cleanup", label: "Cleanup" },
-  { id: "Workshop", label: "Workshop" },
-  { id: "Plantation", label: "Plantation" },
-  { id: "Food Drive", label: "Food Drive" },
-] as const;
-
-const LOCATION_OPTIONS = [
-  { id: "Uttara,Dhaka", label: "Uttara, Dhaka" },
-  { id: "Badda,Dhaka", label: "Badda, Dhaka" },
-  { id: "Mohammadpur,Dhaka", label: "Mohammadpur, Dhaka" },
-  { id: "Mirpur,Dhaka", label: "Mirpur, Dhaka" },
-  { id: "Dhanmondi,Dhaka", label: "Dhanmondi, Dhaka" },
-] as const;
-
+// ---------- Component ----------
 const EditModal = ({ eventList }: EditModalProps) => {
   const {
     _id,
@@ -77,35 +68,48 @@ const EditModal = ({ eventList }: EditModalProps) => {
     image,
     location,
     description,
-    date, // ✅
+    date,
   } = eventList;
 
+  const LOCATION_IDS = [
+    "Uttara,Dhaka",
+    "Badda, Dhaka",
+    "Mohammadpur, Dhaka",
+    "Mirpur, Dhaka",
+    "Dhanmondi, Dhaka",
+  ];
+
+  // ✅ লোকেশন স্ট্রিং নাকি অবজেক্ট চেক করা
+  const rawVenue = typeof location === "string" ? location : location?.venue;
+  
+  // ✅ ডিফল্ট ভ্যালু নরমালাইজ করে বের করা
+  const initialLocation = rawVenue
+    ? LOCATION_IDS.find((id) => normalize(id) === normalize(rawVenue)) ?? ""
+    : "";
+
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(
-    category ?? null
-  );
-  const [selectedLocation, setSelectedLocation] = useState<string | null>(
-    location?.venue ?? null
-  );
+  const [selectedCategory, setSelectedCategory] = useState<string>(category ?? "");
+  const [selectedLocation, setSelectedLocation] = useState<string>(initialLocation);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const formData = new FormData(e.currentTarget);
-    const updatedEvent = Object.fromEntries(formData.entries());
 
-    // ✅ Past date validation
+    // ✅ API তে ডেটা পাঠানোর সময় location কে অবজেক্ট {} হিসেবে পাঠানো হচ্ছে
+    const updatedEvent = {
+      title: formData.get("title"),
+      description: formData.get("description"),
+      imageUrl: formData.get("imageUrl"),
+      date: formData.get("date"),
+      category: selectedCategory,
+      location: { venue: selectedLocation }, // <--- অবজেক্ট হিসেবে সেভ হবে
+    };
+
     const selectedDate = String(updatedEvent.date ?? "");
-    if (!selectedDate) {
-      toast.error("Please select an event date");
-      return;
-    }
     if (selectedDate < getTodayString()) {
       toast.error("Past date select করা যাবে না");
       return;
     }
-
-    console.log("updated event", updatedEvent);
 
     try {
       const res = await fetch(
@@ -118,23 +122,16 @@ const EditModal = ({ eventList }: EditModalProps) => {
       );
 
       if (!res.ok) {
-        toast.error("Failed to update product", {
-          autoClose: 4000,
-          position: "top-center",
-        });
+        toast.error("Failed to update product", { autoClose: 4000 });
         return;
       }
 
-      const data = await res.json();
-      console.log("Updated data", data);
+      toast.success("Product updated successfully", { autoClose: 4000 });
+      setIsOpen(false); // মডাল বন্ধ হবে
 
-      toast.success("Product updated", {
-        autoClose: 4000,
-        position: "top-center",
-      });
+      // ✅ ব্রাউজার পুরোপুরি রিফ্রেশ হবে এবং নতুন লোকেশন টেবিলে দেখা যাবে
+      window.location.reload(); 
 
-      setIsOpen(false);
-      window.location.reload();
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong");
@@ -151,6 +148,7 @@ const EditModal = ({ eventList }: EditModalProps) => {
         <Modal.Container placement="auto">
           <Modal.Dialog className="sm:max-w-md">
             <Modal.CloseTrigger />
+
             <Modal.Header>
               <Modal.Icon className="bg-accent-soft text-accent-soft-foreground" />
               <Modal.Heading>Update Event</Modal.Heading>
@@ -160,31 +158,20 @@ const EditModal = ({ eventList }: EditModalProps) => {
               <Surface variant="default">
                 <form onSubmit={onSubmit} className="p-2 space-y-8 m-2">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
                     {/* Title */}
                     <div className="md:col-span-2">
                       <TextField defaultValue={title} name="title" isRequired>
                         <Label>Event Title</Label>
-                        <Input
-                          placeholder="Enter your event name"
-                          className="rounded-2xl"
-                        />
+                        <Input placeholder="Enter event name" className="rounded-2xl" />
                         <FieldError />
                       </TextField>
                     </div>
 
                     {/* Description */}
-                    <TextField
-                      defaultValue={description}
-                      name="description"
-                      type="text"
-                      isRequired
-                    >
+                    <TextField defaultValue={description} name="description" isRequired>
                       <Label>Description</Label>
-                      <Input
-                        type="text"
-                        placeholder="description"
-                        className="rounded-2xl"
-                      />
+                      <Input placeholder="description" className="rounded-2xl" />
                       <FieldError />
                     </TextField>
 
@@ -192,9 +179,9 @@ const EditModal = ({ eventList }: EditModalProps) => {
                     <div>
                       <Label>Event type</Label>
                       <Select
-                        value={selectedCategory}
-                        onChange={(key) => setSelectedCategory(key as string)}
-                        name="category"
+                        key={`cat-${selectedCategory}`}
+                        value={selectedCategory || null}
+                        onChange={(key) => setSelectedCategory(key ? String(key) : "")}
                         isRequired
                         className="rounded-2xl hover:bg-slate-300"
                         placeholder="Event type"
@@ -205,16 +192,11 @@ const EditModal = ({ eventList }: EditModalProps) => {
                         </Select.Trigger>
                         <Select.Popover>
                           <ListBox>
-                            {CATEGORY_OPTIONS.map((opt) => (
-                              <ListBox.Item
-                                key={opt.id}
-                                id={opt.id}
-                                textValue={opt.label}
-                              >
-                                {opt.label}
-                                <ListBox.ItemIndicator />
-                              </ListBox.Item>
-                            ))}
+                            <ListBox.Item id="Donation" textValue="Donation">Donation<ListBox.ItemIndicator /></ListBox.Item>
+                            <ListBox.Item id="Cleanup" textValue="Cleanup">Cleanup<ListBox.ItemIndicator /></ListBox.Item>
+                            <ListBox.Item id="Workshop" textValue="Workshop">Workshop<ListBox.ItemIndicator /></ListBox.Item>
+                            <ListBox.Item id="Plantation" textValue="Plantation">Plantation<ListBox.ItemIndicator /></ListBox.Item>
+                            <ListBox.Item id="Food Drive" textValue="Food Drive">Food Drive<ListBox.ItemIndicator /></ListBox.Item>
                           </ListBox>
                         </Select.Popover>
                       </Select>
@@ -222,45 +204,29 @@ const EditModal = ({ eventList }: EditModalProps) => {
 
                     {/* Image URL */}
                     <div className="md:col-span-2">
-                      <TextField
-                        defaultValue={imageUrl ?? image}
-                        name="imageUrl"
-                        isRequired
-                      >
+                      <TextField defaultValue={imageUrl ?? image} name="imageUrl" isRequired>
                         <Label>Image URL</Label>
-                        <Input
-                          type="url"
-                          placeholder="Enter your photo url"
-                          className="rounded-2xl"
-                        />
+                        <Input type="url" placeholder="Enter photo url" className="rounded-2xl" />
                         <FieldError />
                       </TextField>
                     </div>
 
-                    {/* ✅ Date — শুধু future select করা যাবে */}
+                    {/* Date */}
                     <div className="md:col-span-2">
-                      <TextField
-                        defaultValue={toDateInputValue(date)}
-                        name="date"
-                        isRequired
-                      >
+                      <TextField defaultValue={toDateInputValue(date)} name="date" isRequired>
                         <Label>Event Date</Label>
-                        <Input
-                          type="date"
-                          min={getTodayString()}
-                          className="rounded-2xl"
-                        />
+                        <Input type="date" min={getTodayString()} className="rounded-2xl" />
                         <FieldError />
                       </TextField>
                     </div>
 
-                    {/* Location */}
-                    <div>
+                    {/* ✅ Location (with default value and no map) */}
+                    <div className="md:col-span-2">
                       <Label>Location</Label>
                       <Select
-                        value={selectedLocation}
-                        onChange={(key) => setSelectedLocation(key as string)}
-                        name="location"
+                        key={`loc-${selectedLocation}`} // ✅ ডিফল্ট ভ্যালু দেখানোর জন্য key
+                        value={selectedLocation || null}  // ✅ controlled value
+                        onChange={(key) => setSelectedLocation(key ? String(key) : "")}
                         isRequired
                         className="rounded-2xl hover:bg-slate-300 text-black"
                         placeholder="Select location"
@@ -271,20 +237,26 @@ const EditModal = ({ eventList }: EditModalProps) => {
                         </Select.Trigger>
                         <Select.Popover>
                           <ListBox>
-                            {LOCATION_OPTIONS.map((opt) => (
-                              <ListBox.Item
-                                key={opt.id}
-                                id={opt.id}
-                                textValue={opt.label}
-                              >
-                                {opt.label}
-                                <ListBox.ItemIndicator />
-                              </ListBox.Item>
-                            ))}
+                            <ListBox.Item id="Uttara,Dhaka" textValue="Uttara, Dhaka">
+                              Uttara, Dhaka<ListBox.ItemIndicator />
+                            </ListBox.Item>
+                            <ListBox.Item id="Badda, Dhaka" textValue="Badda, Dhaka">
+                              Badda, Dhaka<ListBox.ItemIndicator />
+                            </ListBox.Item>
+                            <ListBox.Item id="Mohammadpur, Dhaka" textValue="Mohammadpur, Dhaka">
+                              Mohammadpur, Dhaka<ListBox.ItemIndicator />
+                            </ListBox.Item>
+                            <ListBox.Item id="Mirpur, Dhaka" textValue="Mirpur, Dhaka">
+                              Mirpur, Dhaka<ListBox.ItemIndicator />
+                            </ListBox.Item>
+                            <ListBox.Item id="Dhanmondi, Dhaka" textValue="Dhanmondi, Dhaka">
+                              Dhanmondi, Dhaka<ListBox.ItemIndicator />
+                            </ListBox.Item>
                           </ListBox>
                         </Select.Popover>
                       </Select>
                     </div>
+
                   </div>
 
                   <Button
