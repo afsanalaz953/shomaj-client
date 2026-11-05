@@ -6,7 +6,8 @@ import {Button} from "@heroui/react"
 import   DeleteAddingButton from "@/components/manage/DeleteButton";
 import Image from "next/image";
 import { auth } from '@/lib/auth';
-// import EditModal from "@/components/EditModal"
+import EditModal from '@/components/event/EditModal';
+
 
 
 interface EventList {
@@ -18,6 +19,7 @@ interface EventList {
   description?: string;
   category?: string;
   status?:string;
+  userId?:string;
 }
 
 
@@ -106,8 +108,8 @@ console.log(myEventList, "eventlist")
                   <Table.Cell>{eventList.category}</Table.Cell>
                   <Table.Cell> {eventList.status}</Table.Cell>
                   <Table.Cell className="flex gap-3 bg-white p-8">
-                    <Button>  {'Edit'} </Button> 
-                    {/* <EditModal eventLists = {eventList} /> */}
+                    {/* <Button>  {'Edit'} </Button>  */}
+                    <EditModal eventList= {eventList} />
                      < DeleteAddingButton  userId= {eventList._id} />
                    </Table.Cell> 
                 </Table.Row>
