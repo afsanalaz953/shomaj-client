@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   AnimatePresence,
   motion,
@@ -120,11 +121,11 @@ const EventDetailsCard =({ event }: EventDetailsCardProps) => {
       label: "Location",
       value: formatEventLocation(event.location),
     },
-    {
-      icon: <Users className="size-5 shrink-0 text-[#EB7036]" />,
-      label: "Attendance",
-      value: capacity > 0 ? `${registered}/${capacity} joined` : `${registered} joined`,
-    },
+    // {
+    //   icon: <Users className="size-5 shrink-0 text-[#EB7036]" />,
+    //   label: "Attendance",
+    //   value: capacity > 0 ? `${registered}/${capacity} joined` : `${registered} joined`,
+    // },
   ];
 
   const handleJoin = async() => {
@@ -306,7 +307,22 @@ const joinedData = await res.json();
               transition={{ type: "spring", stiffness: 400, damping: 22 }}
             >
               <Button
-                onClick={handleJoin}
+                render={<Link href="/joined" />}
+                onClick={(event) => {
+                  // A normal click keeps the "Joined ✓" feedback + redirect;
+                  // modified clicks (new tab, new window…) follow the href.
+                  if (
+                    event.metaKey ||
+                    event.ctrlKey ||
+                    event.shiftKey ||
+                    event.altKey ||
+                    event.button !== 0
+                  ) {
+                    return;
+                  }
+                  event.preventDefault();
+                  void handleJoin();
+                }}
                 disabled={isFull || joined}
                 className={`h-11 gap-2 rounded-xl px-8 text-sm font-semibold text-white transition-colors ${
                   joined

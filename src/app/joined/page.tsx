@@ -41,6 +41,7 @@ console.log(myJoinedEventList, "joinedlist")
 // ---- have no date, so they are treated as the oldest and shown first.
 const joinedTime = (event: JoinedEvent) => {
   const time = event.joinedAt ? Date.parse(event.joinedAt) : Number.NaN;
+  console.log(event, 'event')
   return Number.isNaN(time) ? 0 : time;
 };
 const sortedJoinedEvents = [...myJoinedEventList].sort(

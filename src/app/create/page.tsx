@@ -8,7 +8,6 @@ import {
   CalendarIcon,
   Image as ImageIcon,
   Loader2,
-  MapPin,
   Plus,
   RotateCcw,
   Sparkles,
@@ -60,6 +59,14 @@ const EVENT_TYPES = [
 ] as const;
 
 type EventType = (typeof EVENT_TYPES)[number];
+
+const EVENT_LOCATIONS = [
+  "Uttara, Dhaka",
+  "Badda, Dhaka",
+  "Mohammadpur, Dhaka",
+  "Mirpur, Dhaka",
+  "Dhanmondi, Dhaka",
+] as const;
 
 interface EventFormState {
   title: string;
@@ -337,21 +344,27 @@ const data = await res.json();
               </Field>
 
               <Field data-invalid={errors.location ? true : undefined}>
-                <FieldLabel htmlFor="event-location" className="text-lg font-bold">
+                <FieldLabel className="text-lg font-bold">
                   Location <span aria-hidden className="text-destructive">*</span>
                 </FieldLabel>
-                <div className="relative">
-                  <MapPin className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    id="event-location"
-                    name="location"
-                    placeholder="e.g. Dhaka Convention Center"
-                    className="pl-8"
-                    value={form.location}
-                    onChange={(e) => patch({ location: e.target.value })}
+                <Select
+                  value={form.location}
+                  onValueChange={(value) => patch({ location: value })}
+                >
+                  <SelectTrigger
+                    className="w-full"
                     aria-invalid={!!errors.location}
-                  />
-                </div>
+                  >
+                    <SelectValue placeholder="Pick a location" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {EVENT_LOCATIONS.map((location) => (
+                      <SelectItem key={location} value={location}>
+                        {location}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FieldError>{errors.location}</FieldError>
               </Field>
             </FieldGroup>
