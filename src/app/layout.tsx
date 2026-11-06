@@ -3,7 +3,7 @@ import {  Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import Navber from '@/components/home/Navber'
 import Footer from "@/components/shared/Footer";
-
+import NextThemeProvider from "@/providers/NextThemeProvider"
 
 const josefinSans = Josefin_Sans({
  
@@ -21,15 +21,21 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${josefinSans.className}  h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-[#F8F7F2]">
-        <Navber />
       
- <main>
-    {children}
-  </main>      
+      className={`${josefinSans.className}  h-full antialiased`}
+      suppressHydrationWarning
+    >
+      <body className="min-h-full flex flex-col bg-base-100 text-base-content">
+     <NextThemeProvider>
+      
+         <Navber />
+         <main>
+            {children}
+           </main>      
       <Footer />
+      
+      </NextThemeProvider>   
+        
         
         </body>
     </html>

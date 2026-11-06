@@ -72,6 +72,12 @@ const DropDownHover = () => {
           <span> Joined</span>
           </Link>
         </DropdownMenuItem>
+         <DropdownMenuItem>
+      <Link href='/profile' className="flex gap-2 items-center ">
+          <SettingsIcon /> 
+          <span> Profile</span>
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" onClick={handleLogout}>
           <LogOutIcon /> Log out

@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import DropDownHover from "@/components/home/DropDownHover";
 import { Button } from "../ui/button";
+import ThemeToggle from "@/components/shared/ThemeToggle"
 
 const Navbar = () => {
   const { data: session, isPending } = authClient.useSession();
@@ -30,7 +31,8 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-base-300 bg-[#D9EF78] backdrop-blur-md shadow-sm">
-      <div className="navbar grid grid-cols-3 gap-15 container mx-auto px-4">
+     <div className="flex justify-between container mx-auto">
+        <div className="navbar grid grid-cols-3 gap-15 container mx-auto px-4">
         {/* ================= LEFT ================= */}
         <div className="navbar-start gap-2">
           {/* ---- Mobile hamburger ---- */}
@@ -122,7 +124,7 @@ const Navbar = () => {
             />
             <div>
               <p className="text-3xl font-bold tracking-widest  hover:text-white">shomaj.</p>
-              {/* <p className="font-bold text-2xl leading-none">serein.</p> */}
+              {/* <p className="font-bold text-2xl leading-none">Shomaj.</p> */}
               <p className="text-[#087C7E] text-sm">Social Events Hub</p>
             </div>
           </Link>
@@ -181,10 +183,21 @@ const Navbar = () => {
                 Sign Up
               </Link>
               </Button>
+              
+             
             </div>
           )}
         </div>
+      
+       
       </div>
+
+      <div className="mt-2 mr-4">
+          <ThemeToggle />
+        </div>
+     </div>
+     
+        
     </header>
   );
 };
