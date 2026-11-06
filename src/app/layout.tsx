@@ -4,6 +4,8 @@ import "./globals.css";
 import Navber from '@/components/home/Navber'
 import Footer from "@/components/shared/Footer";
 import NextThemeProvider from "@/providers/NextThemeProvider"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const josefinSans = Josefin_Sans({
  
@@ -28,10 +30,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-base-100 text-base-content">
      <NextThemeProvider>
       
-         <Navber />
+      <Navber />
          <main>
             {children}
-           </main>      
+           </main> 
+                <ToastContainer position="top-right" />   
       <Footer />
       
       </NextThemeProvider>   
