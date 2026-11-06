@@ -48,14 +48,11 @@ import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
 
 const EVENT_TYPES = [
-  "Conference",
+  "Donation",
   "Workshop",
-  "Meetup",
-  "Concert",
-  "Sports",
-  "Webinar",
-  "Festival",
-  "Other",
+  "Cleanup",
+  "Plantation",
+ "Food Drive",
 ] as const;
 
 type EventType = (typeof EVENT_TYPES)[number];
