@@ -148,6 +148,7 @@ const CreateEventPage = () => {
 
     const { data: session} = authClient.useSession();
     const user = session?.user;
+    const userId = user?.id;
 console.log (user, "user");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -181,12 +182,23 @@ console.log (user, "user");
         userEmail: user?.email,
         userImage: user?.image,
       };
+      // Token added
+    const { data:tokenData} = await authClient.token(); 
+console.log(tokenData, "create Event Token")
+
+    if (!userId || !tokenData?.token) {
+  toast.error("Please login first");
+  return;
+}
 
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/create`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            authorization:`Bearer ${tokenData.token}`
+          },
           body: JSON.stringify(payload),
         }
       );
@@ -198,8 +210,8 @@ console.log (user, "user");
 //            body: JSON.stringify(allTutor)
 //         })
 
-const data = await res.json();
- console.log( 'data after post', data);
+const result = await res.json();
+ console.log( 'data after post', result);
 
       if (!res.ok) {
         throw new Error(`Request failed with status ${res.status}`);

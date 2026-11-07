@@ -2,7 +2,7 @@
 import { headers } from 'next/headers';
 import React from 'react';
 import { Table } from '@heroui/react';
-import {Button} from "@heroui/react"
+// import {Button} from "@heroui/react"
 import   DeleteAddingButton from "@/components/manage/DeleteButton";
 import Image from "next/image";
 import { auth } from '@/lib/auth';
@@ -35,14 +35,18 @@ const session = await auth.api.getSession({
     return <div>Unauthorized: Please login</div>;
   }
 console.log(session, "myeventsession")
-
+// server-side a token
+  const tokenObjData = await auth.api.getToken({
+        headers: await headers()
+    })
+     console.log(tokenObjData, "ManageTokenData")
 
 const res = await fetch (`${process.env.NEXT_PUBLIC_SERVER_URL}/manage/${user?.id}`,{
   cache: 'no-store',
-//    headers:{
-//      authorization: `Bearer ${tokenObj.token}`
+   headers:{
+     authorization: `Bearer ${tokenObjData.token}`
       
-//  }
+ }
 });
 
 

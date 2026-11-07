@@ -73,6 +73,7 @@ type JoinedRecord = { eventId?: string };
 const EventDetailsCard = ({ event }: EventDetailsCardProps) => {
   const { data: session } = authClient.useSession();
   const user = session?.user;
+  const userId = user?.id;
 
   const router = useRouter();
   const reduceMotion = useReducedMotion();
@@ -102,10 +103,24 @@ const EventDetailsCard = ({ event }: EventDetailsCardProps) => {
     let cancelled = false;
 
     const checkAlreadyJoined = async () => {
+
+          // Token added
+         const { data:tokenData} = await authClient.token(); 
+     console.log(tokenData, "join button Token")
+     
+         if (!userId || !tokenData?.token) {
+       toast.error("Please login first");
+       return;
+     } 
+
       try {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_SERVER_URL}/joined/${user.id}`,
-          { cache: "no-store" },
+          { cache: "no-store",
+            headers:{
+                authorization: `Bearer ${tokenData.token}`
+                 } 
+           },
         );
         if (!res.ok) return;
         const list: JoinedRecord[] = await res.json();

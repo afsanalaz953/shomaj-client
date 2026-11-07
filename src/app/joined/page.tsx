@@ -14,10 +14,20 @@ const JoinEventPage = async () => {
     console.error('No session found');
     return <div>Unauthorized: Please login</div>;
   }
+  // server-side a token
+  const tokenObjData = await auth.api.getToken({
+        headers: await headers()
+    })
+     console.log(tokenObjData, "joinedTokenData")
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_URL}/joined/${user.id}`,
-    { cache: 'no-store' },
+    { cache: 'no-store',
+      headers:{
+    authorization: `Bearer ${tokenObjData.token}`
+     } 
+
+    },
   );
 
   if (!res.ok) {

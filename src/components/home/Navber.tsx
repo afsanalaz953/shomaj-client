@@ -55,7 +55,7 @@ const Navbar = () => {
             </button>
 
             {/* ---- Mobile dropdown menu ---- */}
-            <ul className="menu dropdown-content mt-3 w-64 rounded-box bg-base-100 p-2 shadow-lg border border-base-300">
+            <ul className="menu bg-[#087C7E] dropdown-content text-white mt-3 w-64 rounded-box  p-2 shadow-lg border border-base-300">
               {links.map(({ href, label }) => (
                 <li key={href}>
                   <Link
@@ -63,7 +63,7 @@ const Navbar = () => {
                     onClick={closeMenu} // ✅ Close menu on link click
                     className={
                       isActive(href)
-                        ? "active text-[#087C7E] font-semibold"
+                        ? "active text-white font-semibold"
                         : ""
                     }
                   >
@@ -81,7 +81,7 @@ const Navbar = () => {
                 </li>
               ) : user ? (
                 <>
-                  <li className="px-3 py-1 text-sm opacity-70 truncate">
+                  <li className="px-3 py-1 text-sm opacity-70 text-white truncate">
                     Hi, {user.name}
                   </li>
                   <li>
@@ -92,7 +92,7 @@ const Navbar = () => {
                          router.push("/");
                          router.refresh(); 
                       }}
-                       className="text-[#087C7E] font-medium"
+                       className="text-white font-medium"
                     >
                       Sign Out
                     </Button>
