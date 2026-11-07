@@ -122,11 +122,11 @@ const EditModal = ({ eventList }: EditModalProps) => {
       );
 
       if (!res.ok) {
-        toast.error("Failed to update product", { autoClose: 4000 });
+        toast.error("Failed to update event", { autoClose: 4000 });
         return;
       }
 
-      toast.success("Product updated successfully", { autoClose: 4000 });
+      toast.success("Event updated successfully", { autoClose: 4000 });
       setIsOpen(false); // মডাল বন্ধ হবে
 
       // ✅ ব্রাউজার পুরোপুরি রিফ্রেশ হবে এবং নতুন লোকেশন টেবিলে দেখা যাবে

@@ -30,7 +30,7 @@ const Navbar = () => {
   const closeMenu = () => setOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-base-300 bg-[#D9EF78] backdrop-blur-md shadow-sm">
+    <header className="sticky top-0 z-50 w-full py-2 border-b border-base-300 bg-[#D9EF78] backdrop-blur-md shadow-sm">
      <div className="flex justify-between container mx-auto">
         <div className="navbar grid grid-cols-3 gap-25 container mx-auto px-4">
         {/* ================= LEFT ================= */}
@@ -167,22 +167,22 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="flex gap-2">
-                <Button>
+               <button> 
               <Link
                 href="/signin"
-                className=" bg-[#EB7036] text-white hover:bg-[#EB7036]"
+                className=" bg-[#EB7036] rounded-full p-2 text-white hover:bg-[#EB7036]"
               >
                 Sign in
               </Link>
-              </Button>
-              <Button>
+             </button>
+              <button>
               <Link
                 href="/signup"
-                className=" bg-[#EB7036] text-white hover:bg-[#EB7036]"
+                className=" bg-[#EB7036] rounded-full p-2 text-white hover:bg-[#EB7036]"
               >
                 Sign Up
               </Link>
-              </Button>
+              </button>
               
              
             </div>

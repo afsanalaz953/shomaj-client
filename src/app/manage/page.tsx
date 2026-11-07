@@ -59,7 +59,7 @@ console.log(myEventList, "eventlist")
 
     return (
     <div className='container mx-auto m-20 space-y-10'>
-  <h1 className='font-bold text-center lg:text-3xl'>My Tutors List</h1>
+  <h1 className='font-bold text-center lg:text-3xl'>My Event List</h1>
 
   {/* ✅ Empty state check – put it here */}
   {!myEventList || myEventList.length === 0 ? (
