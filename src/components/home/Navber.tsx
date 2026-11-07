@@ -32,7 +32,7 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-base-300 bg-[#D9EF78] backdrop-blur-md shadow-sm">
      <div className="flex justify-between container mx-auto">
-        <div className="navbar grid grid-cols-3 gap-15 container mx-auto px-4">
+        <div className="navbar grid grid-cols-3 gap-25 container mx-auto px-4">
         {/* ================= LEFT ================= */}
         <div className="navbar-start gap-2">
           {/* ---- Mobile hamburger ---- */}

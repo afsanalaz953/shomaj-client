@@ -30,7 +30,7 @@ const neighbors = [
 
 const Banner = () => {
   return (
-    <section className="container max-auto min-h-screen max-w-7xl">
+    <section className="container mx-auto min-h-screen rounded-2xl ">
       {/* ================= HERO ================= */}
       <div className="relative isolate overflow-hidden">
         {/* Background photo */}
@@ -84,14 +84,14 @@ const Banner = () => {
           {/* ---- CTAs ---- */}
           <div className="mt-9 flex flex-wrap items-center gap-4">
             <Button
-              render={<Link href="/events" />}
+              render={<Link href="/upcoming" />}
               className="group h-11 gap-2 rounded-full bg-[#EB7036] px-7 text-sm font-semibold text-white hover:bg-[#d95f27]"
             >
               Explore events
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button
-              render={<Link href="/events/create" />}
+              render={<Link href="/create" />}
               variant="outline"
               className="h-11 rounded-full border-white/70 bg-transparent px-7 text-sm font-semibold text-white hover:bg-white/10 hover:text-white"
             >
