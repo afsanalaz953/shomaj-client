@@ -79,7 +79,7 @@ const Footer = () => {
         {/* 4. Copyright */}
         <div className="flex items-end md:items-start lg:items-end lg:justify-end">
           <p className="text-[11px] font-light tracking-wide text-white md:text-xs lg:text-right">
-            &copy; {currentYear} serein. &mdash; A Furniture Hub.
+            &copy; {currentYear} Shomaj. &mdash; Social Events Hub.
           </p>
         </div>
       </div>
