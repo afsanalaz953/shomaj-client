@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+#🌍 Shomaj-Social Events Hub
 
-First, run the development server:
+Shomaj is a modern, community-driven space where people discover, create, and join social events happening around them. Whether it's a tree plantation drive, a blood donation camp, a food drive, or an elderly care visit, users can browse upcoming events, register with a single click, and keep track of everything they've joined — all in one clean, intuitive dashboard. Built with security at its core, the platform protects user identity and personal information through industry-standard authentication and encrypted sessions, so members can focus on what matters most: coming together and making a difference.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Key features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Browse & Discover Events — Explore a curated feed of upcoming social events with details like title, category, location, date, and description.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Create Your Own Event — Any authenticated user can host an event by filling out a simple form, instantly making it visible to the community.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# One-Click Join — Join any event with a single action; the platform prevents duplicate joins using a unique compound index per user-event pair.
 
-## Learn More
+# My Joined Events Dashboard — A personal section where users see every event they've joined, complete with join date and full event details.
 
-To learn more about Next.js, take a look at the following resources:
+# Detailed Event Pages — Dedicated routes for each event showing imagery, category badges, venue, date, description, and registration count.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Duplicate Join Protection — Server-side checks and MongoDB unique indexes guarantee a user can only join an event once, even under race conditions.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Smart Event Validation — Events are verified against the database before joining, so users never register for non-existent or removed events.
 
-## Deploy on Vercel
+# Rich Location Display — Multi-part locations (venue, area, city) are elegantly formatted, with graceful fallbacks when data is missing.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Responsive, Accessible UI — Fully responsive layouts with accessible components, keyboard navigation, and screen-reader support.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+🛠️ Technology Stack
+> TypeScript 
+
+> Next.js (App Router) 
+
+> Express.js 
+
+> Better Auth
+
+> JWT (JSON Web Tokens) 
+
+> MongoDB 
+
+> Tailwind CSS
+
+> shadcn/ui 
+
+
+
+*=> Live Link
+https://shomaj-client.vercel.app

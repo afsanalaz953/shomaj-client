@@ -84,7 +84,7 @@ const UpdatedProfile = ({
         <div className="pt-6 px-6 pb-6">
           <form onSubmit={handleSubmit} className="space-y-5 w-full">
             {/* Full Name – TextField + Label + Input */}
-            <TextField className="flex flex-col gap-1">
+            {/* <TextField className="flex flex-col gap-1">
               <Label>Full Name</Label>
               <Input
                 name="name"
@@ -93,10 +93,14 @@ const UpdatedProfile = ({
                 className="bg-gray-50 border-gray-300 focus:border-indigo-500"
                
               />
-            </TextField>
+            </TextField> */}
+            <TextField defaultValue={userName ?? ""} className="flex flex-col gap-1">
+              <Label>Full Name</Label>
+               <Input name="name" placeholder="John Doe" />
+             </TextField>
 
             {/* Avatar URL – TextField + Label + Input */}
-            <TextField className="flex flex-col gap-1">
+            {/* <TextField className="flex flex-col gap-1">
               <Label>Avatar URL</Label>
               <Input
                 name="image"
@@ -104,7 +108,14 @@ const UpdatedProfile = ({
                 defaultValue={image ?? ""}
                 className="bg-gray-50 border-gray-300 focus:border-indigo-500"
               />
-            </TextField>
+            </TextField> */}
+            <TextField defaultValue={image ?? ""} className="flex flex-col gap-1">
+              <Label>Avatar URL</Label>
+              <Input
+                name="image"
+                placeholder="https://api.dicebear.com/7.x/adventurer/svg?seed=John"
+                />
+             </TextField>
 
             <div className="flex justify-end gap-3 pt-2">
               {/* Cancel – variant="tertiary" (v2-এর light-এর সমতুল্য) */}
