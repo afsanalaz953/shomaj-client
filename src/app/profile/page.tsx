@@ -7,12 +7,15 @@ import Link from "next/link";
 import { Button } from "@heroui/react";
 import UpdatedProfile from "@/components/shared/UpdatedProfile";
 
+import { useRouter } from 'next/navigation';
+
+
 const ProfilePage = () => {
   const { data: session, isPending, refetch } = authClient.useSession();
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
   const user = session?.user;
-
+const router = useRouter();
   /* ---------- Loading / Unauthenticated states ---------- */
   if (isPending) {
     return (
@@ -27,7 +30,7 @@ const ProfilePage = () => {
       <div className="bg-base-100 shadow-sm m-4 p-20 text-center">
         <p className="text-xl mb-4">You are not logged in.</p>
         <Link href="/login">
-          <Button color="primary">Go to Login</Button>
+          <Button variant="primary">Go to Login</Button>
         </Link>
       </div>
     );
@@ -58,15 +61,22 @@ const ProfilePage = () => {
           <h2 className="card-title font-bold text-3xl">{user.name}</h2>
           <p className="text-lg">{user.email}</p>
 
-          <div className="card-actions w-full flex flex-col gap-2 mt-4">
-            <Button
+          <div className="card-actions w-full flex flex-col justify-center gap-2 mt-4">
+            {/* <Button
               as={Link}
               href="/"
-              variant="flat"
+              variant="tertiary"
               className="w-full bg-blue-300"
             >
               Go Back to Home
-            </Button>
+            </Button> */}
+         {/* const router = useRouter(); */}
+<Button 
+className='ml-30'
+variant="tertiary" onPress={() => router.push("/")
+}>
+  Go Back to Home
+</Button>
 
             <Button
               className="w-full bg-[#D9EF78]"

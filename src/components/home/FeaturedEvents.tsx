@@ -5,9 +5,10 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { CalendarDays, Eye, MapPin } from "lucide-react";
 import { format, isValid, parseISO } from "date-fns";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import type { Event } from "@/types/event";
+import { cn } from "@/lib/utils";
 
 const gridContainer: Variants = {
   hidden: { opacity: 0 },
@@ -115,13 +116,23 @@ const FeaturedEvents = ({ events }: FeaturedEventsProps) => {
 
             {/* ---- View button ---- */}
             <CardFooter className="border-t bg-transparent p-4">
-              <Button
+              {/* <Button
                 render={<Link href={`/upcoming/${event._id}`} />}
                 className="h-11 w-full gap-2 rounded-xl bg-[#EB7036] text-sm font-semibold text-white hover:bg-[#d95f27]"
               >
                 <Eye className="size-4" />
                 View Event
-              </Button>
+              </Button> */}
+              <Link
+      href={`/upcoming/${event._id}`}
+      className={cn(
+        buttonVariants({ variant: "default", size: "lg" }),
+        "h-11 w-full gap-2 rounded-xl bg-[#EB7036] text-sm font-semibold text-white hover:bg-[#d95f27]"
+      )}
+    >
+      <Eye className="size-4" />
+      View Event
+    </Link>
             </CardFooter>
           </Card>
         </motion.div>

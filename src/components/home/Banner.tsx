@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Playfair_Display } from "next/font/google";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button"; // ✅ বদলান
+import { cn } from "@/lib/utils";
 import {
   Avatar,
   AvatarFallback,
@@ -83,20 +85,41 @@ const Banner = () => {
 
           {/* ---- CTAs ---- */}
           <div className="mt-9 flex flex-wrap items-center gap-4">
-            <Button
+            {/* <Button
               render={<Link href="/upcoming" />}
               className="group h-11 gap-2 rounded-full bg-[#EB7036] px-7 text-sm font-semibold text-white hover:bg-[#d95f27]"
             >
               Explore events
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-            <Button
+            </Button> */}
+ <Link
+              href="/upcoming"
+              className={cn(
+                buttonVariants({ variant: "default", size: "lg" }),
+                "group h-11 gap-2 rounded-full bg-[#EB7036] px-7 text-sm font-semibold text-white hover:bg-[#d95f27]",
+              )}
+            >
+              Explore events
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+
+            {/* <Button
               render={<Link href="/create" />}
               variant="outline"
               className="h-11 rounded-full border-white/70 bg-transparent px-7 text-sm font-semibold text-white hover:bg-white/10 hover:text-white"
             >
               Start an event
-            </Button>
+            </Button> */}
+ <Link
+              href="/create"
+              className={cn(
+                buttonVariants({ variant: "outline", size: "lg" }),
+                "h-11 rounded-full border-white/70 bg-transparent px-7 text-sm font-semibold text-white hover:bg-white/10 hover:text-white",
+              )}
+            >
+              Start an event
+            </Link>
+
           </div>
 
           {/* ---- Social proof card ---- */}

@@ -7,12 +7,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { CalendarDays, Clock, Eye, MapPin } from "lucide-react";
 import Link from "next/link";
 import type { Event } from "@/types/event";
 import SearchBar from "@/components/shared/SearchBar";
 import CategoryFilter from "@/components/shared/CategoryFilter";
+import { cn } from "@/lib/utils";
 
 // ============ Helpers ============
 const formatDate = (date?: string) => {
@@ -103,14 +104,24 @@ const EventCard = ({ event }: { event: Event }) => {
       </CardContent>
 
       <CardFooter>
-        <Button
+        {/* <Button
           variant="outline"
           className="w-full bg-[#EB7036] rounded"
           render={<Link href={`/upcoming/${event._id}`} />}
         >
           <Eye className="size-4" />
           View Event
-        </Button>
+        </Button> */}
+        <Link
+      href={`/upcoming/${event._id}`}
+      className={cn(
+        buttonVariants({ variant: "default", size: "lg" }),
+        "h-11 w-full gap-2 rounded-xl bg-[#EB7036] text-sm font-semibold text-white hover:bg-[#d95f27]"
+      )}
+    >
+      <Eye className="size-4" />
+      View Details
+    </Link>
       </CardFooter>
     </Card>
   );

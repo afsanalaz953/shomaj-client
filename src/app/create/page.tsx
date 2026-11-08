@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+
 import {
-  CalendarDays,
+  // CalendarDays,
   CalendarIcon,
   Image as ImageIcon,
   Loader2,
@@ -187,7 +187,11 @@ console.log (user, "user");
 console.log(tokenData, "create Event Token")
 
     if (!userId || !tokenData?.token) {
-  toast.error("Please login first");
+  toast.add({
+  type: "error",
+  title: "Login required",
+  description: "Please login first",
+});
   return;
 }
 
@@ -358,7 +362,7 @@ const result = await res.json();
                 </FieldLabel>
                 <Select
                   value={form.location}
-                  onValueChange={(value) => patch({ location: value })}
+                  onValueChange={(value) => patch({ location: value ?? "" })}
                 >
                   <SelectTrigger
                     className="w-full"

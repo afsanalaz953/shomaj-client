@@ -51,7 +51,7 @@ const SignUpPage = () => {
       email, // required
       image,
       password, // required
-      autoSignIn: false,
+      // autoSignIn: false,
       callbackURL: "/login",
     });
 

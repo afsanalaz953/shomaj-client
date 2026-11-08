@@ -1,7 +1,7 @@
 "use client";
 
 import { AlertDialog, Button } from "@heroui/react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { RiDeleteBin3Line } from "react-icons/ri";
 
 type DeleteAddingButtonProps = {
@@ -63,7 +63,7 @@ const DeleteAddingButton = ({ userId }: DeleteAddingButtonProps) => {
               <Button
                 onClick={handleDeleteButton}
                 slot="close"
-                color="danger"
+                variant="danger"
                 className="font-bold"
               >
                 Delete Event
